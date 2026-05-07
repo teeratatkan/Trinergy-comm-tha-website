@@ -6,6 +6,7 @@ const authRoutes = require('./routes/auth');
 const productRoutes = require('./routes/products');
 const infoRoutes = require('./routes/info');
 const fivegRoutes = require('./routes/fiveg');
+const newsRoutes = require('./routes/news');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -45,6 +46,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/info', infoRoutes);
 app.use('/api/5g-specs', fivegRoutes);
+app.use('/api/news', newsRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

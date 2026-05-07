@@ -5,7 +5,7 @@ const navLinks = [
   { to: '/', label: 'Home' },
   { to: '/products', label: 'Products' },
   { to: '/5g', label: 'Private 5G' },
-  { to: '/industries', label: 'Industries' },
+  { to: '/news', label: 'News & Events' },
   { to: '/about', label: 'About' },
   { to: '/contact', label: 'Contact' },
 ];

@@ -42,6 +42,18 @@ function initDb() {
       spec_group TEXT DEFAULT 'general',
       display_order INTEGER DEFAULT 0
     );
+
+    CREATE TABLE IF NOT EXISTS news (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      title TEXT NOT NULL,
+      excerpt TEXT,
+      content TEXT,
+      image_path TEXT,
+      category TEXT DEFAULT 'news',
+      event_date TEXT,
+      created_at TEXT DEFAULT (datetime('now')),
+      updated_at TEXT DEFAULT (datetime('now'))
+    );
   `);
 
   // Seed products — always fresh (DB was deleted above)
@@ -388,6 +400,70 @@ function initDb() {
     });
     insertSpecMany(specs);
     console.log('Seeded 5G specs');
+  }
+
+  // Seed news
+  const newsCount = db.prepare('SELECT COUNT(*) as count FROM news').get();
+  if (newsCount.count === 0) {
+    const insertNews = db.prepare(`
+      INSERT INTO news (title, excerpt, content, image_path, category, event_date)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `);
+    const newsItems = [
+      [
+        'Trinergy at EENet 2026 — Thailand\'s Largest Engineering Exhibition',
+        'Trinergy Comm-THA participated in EENet 2026, showcasing our full product lineup including SEED-IOT, OAIBOX 5G, AI Lab, and UData Platform to over 10,000 engineering professionals.',
+        'Trinergy Comm-THA proudly participated in EENet 2026 (Electrical Engineering Network 2026), Thailand\'s largest electrical engineering conference and exhibition held annually by the Electrical Engineering Association of Thailand.\n\nAt our booth, we showcased our complete product ecosystem:\n- SEED-IOT & SEED-IOT-PRO: Smart farm IoT training kits used in over 20 universities\n- OAIBOX™: The world\'s leading plug-and-play 5G education platform\n- AI Lab Kit: Comprehensive AI laboratory for university education\n- UData Platform: Multi-protocol IoT data management platform\n- GEN TRI Sovereign AI: On-premise Thai LLM solution\n\nThe event attracted over 10,000 engineering professionals, academics, and students. Trinergy signed partnership MOUs with 3 new universities and received strong interest from enterprise clients in private 5G deployments.\n\nEENet 2026 reinforced our position as a leading technology integrator in Thailand\'s education and enterprise sectors.',
+        'news-1-eeenet-2026.png',
+        'event',
+        '2026-05-27'
+      ],
+      [
+        'AI Workshop: CNN with PyTorch at Silpakorn University',
+        'Trinergy delivered a hands-on AI training workshop covering Neural Networks and Image Classification using CNN with PyTorch for engineering students at Silpakorn University.',
+        'Trinergy Comm-THA delivered a comprehensive AI training workshop titled "Neural Network Design for Image Classification — CNN with PyTorch" at the Department of Electrical Engineering, Faculty of Engineering and Industrial Technology, Silpakorn University.\n\nThe two-day intensive workshop (17-18 August 2024) covered:\n- Introduction to Neural Networks and Deep Learning concepts\n- Building Simple Neural Networks with PyTorch\n- Convolutional Neural Network (CNN) architecture\n- Image Classification practical exercises\n- Real-world AI deployment scenarios\n\nTrainer: Mr. Jirasak Wongbongkotpaisan from Trinergy\'s AI team led the sessions with hands-on lab exercises using our AI Lab Kit hardware.\n\nStudents gained practical experience with Python, PyTorch, and real image datasets. The workshop is part of Trinergy\'s mission to bring cutting-edge AI education to Thai universities.',
+        'news-2-ai-workshop-silpakorn.jpg',
+        'event',
+        '2024-08-17'
+      ],
+      [
+        'Smart Farm IoT System Delivered to RMUTSB',
+        'Trinergy successfully delivered and installed a complete Smart Farm IoT monitoring system at Rajamangala University of Technology Suvarnabhumi, enabling real-time crop and environment monitoring.',
+        'Trinergy Comm-THA completed the delivery and installation of a complete Smart Farm IoT System at Rajamangala University of Technology Suvarnabhumi (RMUTSB), Faculty of Agricultural Technology.\n\nThe system, developed in collaboration with Professor Wichai\'s research team, includes:\n- Multi-zone soil sensor arrays (N/P/K, moisture, pH, EC)\n- Automated irrigation control system\n- Weather monitoring station\n- Real-time dashboard on UData Platform\n- LINE notification alerts for critical parameters\n\nThe installation supports the university\'s agricultural research programs and provides students hands-on experience with modern precision farming technology.\n\nThe Smart Farm system at RMUTSB is one of Trinergy\'s flagship reference installations, demonstrating our full IoT-to-cloud pipeline in a real agricultural environment.',
+        'news-3-smartfarm-rmutsb.jpg',
+        'news',
+        '2023-11-06'
+      ],
+      [
+        'Trinergy University Solution: Empowering 10+ Thai Universities',
+        'Trinergy\'s integrated university technology solution spans IoT labs, AI platforms, fiber networks, and 5G infrastructure — now deployed across more than 10 universities nationwide.',
+        'Trinergy Comm-THA has established itself as a trusted technology partner for Thai universities, delivering integrated solutions that combine IoT training labs, AI computing platforms, fiber optic networks, and private 5G infrastructure.\n\nOur university solution portfolio covers:\n- PLC & Industrial Wiring Training Panels for Electrical Engineering departments\n- IoT MCU Training Kits (Arduino, ESP32, Raspberry Pi) for Computer Engineering\n- AI Lab Kits with GPU computing for AI/ML research\n- FTTX Fiber Optic Training Systems for Telecom Engineering\n- UData Platform for campus-wide IoT data management\n- Private 5G research networks for advanced wireless research\n\nUniversities currently using Trinergy solutions include institutions across all regions of Thailand. Our team provides installation, training, and ongoing technical support to ensure maximum educational value.\n\nContact us to learn how Trinergy can build your university\'s next-generation engineering laboratory.',
+        'news-4-university-solution.jpg',
+        'news',
+        '2024-06-01'
+      ],
+      [
+        'IoT Lab Equipment Delivery at Loei Rajabhat University',
+        'Trinergy delivered a complete IoT MCU Training Lab to Loei Rajabhat University, equipping the Computer Engineering department with hands-on Arduino, ESP32, and Raspberry Pi learning stations.',
+        'Trinergy Comm-THA completed the delivery and setup of a complete IoT MCU Training Laboratory at Loei Rajabhat University (LRU), Computer Engineering Department.\n\nThe lab equipment includes:\n- 20 stations of MCU IoT Training Kits (Arduino Nano + ESP32 + Raspberry Pi Zero 2)\n- OLED, LCD, and 7-segment display modules\n- Full sensor arrays: DHT22, ultrasonic, LDR, RTC, and motor control\n- RS-232 and RS-485 communication modules\n- Cloud IoT connectivity via MQTT\n\nThe delivery included:\n- Equipment installation and setup\n- 2-day trainer certification workshop for faculty\n- Complete lab manual (20+ structured exercises)\n- 1-year technical support package\n\nThe lab is now fully operational and supports approximately 60 students per semester in hands-on IoT engineering education.',
+        'news-5-lab-delivery-lru.jpg',
+        'news',
+        '2023-08-16'
+      ],
+      [
+        'Smart Library System Installed at SRU',
+        'Trinergy installed an IoT-powered smart library system at Suratthani Rajabhat University, featuring automated book tracking, environmental monitoring, and digital access control.',
+        'Trinergy Comm-THA successfully installed a Smart Library IoT System at Suratthani Rajabhat University (SRU), transforming the university library into a connected, data-driven facility.\n\nThe Smart Library system features:\n- RFID-based automated book tracking and inventory management\n- Environmental sensors: temperature, humidity, CO2, and air quality monitoring\n- Smart lighting control based on occupancy\n- Digital access control with student card integration\n- Real-time occupancy dashboard for library management\n- UData Platform integration for centralized data monitoring\n\nThe project was completed in April 2024 and is now serving students and faculty at SRU. The system has improved library efficiency by reducing manual book inventory time by 80% and providing real-time environmental data for optimal study conditions.\n\nThis installation is part of Trinergy\'s Smart Campus initiative to help Thai universities leverage IoT technology for facility management.',
+        'news-6-smart-library-sru.jpg',
+        'news',
+        '2024-04-19'
+      ],
+    ];
+    const insertNewsMany = db.transaction((items) => {
+      for (const item of items) insertNews.run(...item);
+    });
+    insertNewsMany(newsItems);
+    console.log('Seeded 6 news articles');
   }
 
   console.log('Database initialized successfully');

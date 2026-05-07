@@ -2,6 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
+const NEWS_CATEGORY_COLORS = {
+  event: '#fb923c',
+  news: '#4ade80',
+};
+
 const CATEGORY_LABELS = {
   iot: 'IoT Lab Kits',
   ai: 'AI & Platforms',
@@ -22,10 +27,14 @@ const partners = [
 
 export default function Home() {
   const [featuredProducts, setFeaturedProducts] = useState([]);
+  const [latestNews, setLatestNews] = useState([]);
 
   useEffect(() => {
     axios.get('/api/products')
       .then(res => setFeaturedProducts(res.data.slice(0, 3)))
+      .catch(() => {});
+    axios.get('/api/news')
+      .then(res => setLatestNews(res.data.slice(0, 3)))
       .catch(() => {});
   }, []);
 
@@ -184,6 +193,59 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Latest News & Events */}
+      {latestNews.length > 0 && (
+        <section style={{ padding: '80px 0', borderTop: '1px solid #1a1a1a' }}>
+          <div className="container">
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'flex-end',
+              marginBottom: 48,
+              flexWrap: 'wrap',
+              gap: 16,
+            }}>
+              <div>
+                <p style={{
+                  fontSize: '0.75rem',
+                  fontFamily: 'var(--font-mono)',
+                  color: '#4ade80',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.1em',
+                  marginBottom: 8,
+                }}>
+                  LATEST UPDATES
+                </p>
+                <h2 style={{ fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', position: 'relative', display: 'inline-block' }}>
+                  News &amp; Events
+                  <span style={{
+                    display: 'block',
+                    height: 3,
+                    width: '60%',
+                    background: 'linear-gradient(90deg, #4ade80, transparent)',
+                    borderRadius: 2,
+                    marginTop: 6,
+                  }} />
+                </h2>
+              </div>
+              <Link to="/news" style={{ color: '#4ade80', fontSize: '0.9rem', fontWeight: 500 }}>
+                View all news →
+              </Link>
+            </div>
+
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+              gap: 24,
+            }}>
+              {latestNews.map(item => (
+                <HomeNewsCard key={item.id} item={item} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Partners Strip */}
       <section style={{ padding: '60px 0', borderTop: '1px solid #1a1a1a' }}>
         <div className="container">
@@ -239,6 +301,102 @@ export default function Home() {
         </div>
       </section>
     </div>
+  );
+}
+
+function HomeNewsCard({ item }) {
+  const isEvent = item.category === 'event';
+  const accent = NEWS_CATEGORY_COLORS[item.category] || '#4ade80';
+
+  function formatDate(dateStr) {
+    if (!dateStr) return '';
+    return new Date(dateStr).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  }
+
+  return (
+    <Link to={`/news/${item.id}`} style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+      <div
+        style={{
+          backgroundColor: '#111111',
+          border: '1px solid #262626',
+          borderRadius: 12,
+          overflow: 'hidden',
+          transition: 'border-color 0.2s, transform 0.2s',
+        }}
+        onMouseEnter={e => {
+          e.currentTarget.style.borderColor = accent;
+          e.currentTarget.style.transform = 'translateY(-2px)';
+        }}
+        onMouseLeave={e => {
+          e.currentTarget.style.borderColor = '#262626';
+          e.currentTarget.style.transform = 'none';
+        }}
+      >
+        <div style={{ position: 'relative', height: 180, backgroundColor: '#1a1a1a', overflow: 'hidden' }}>
+          {item.image_path ? (
+            <img
+              src={`/uploads/${item.image_path}`}
+              alt={item.title}
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            />
+          ) : (
+            <div style={{
+              height: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '2.5rem',
+            }}>
+              {isEvent ? '🎪' : '📰'}
+            </div>
+          )}
+          <span style={{
+            position: 'absolute', top: 10, right: 10,
+            backgroundColor: accent,
+            color: '#0a0a0a',
+            fontSize: '0.62rem',
+            fontWeight: 700,
+            padding: '3px 9px',
+            borderRadius: 100,
+            textTransform: 'uppercase',
+            letterSpacing: '0.05em',
+          }}>
+            {isEvent ? 'Event' : 'News'}
+          </span>
+        </div>
+        <div style={{ padding: 18 }}>
+          <h3 style={{
+            fontSize: '0.9rem',
+            marginBottom: 8,
+            lineHeight: 1.4,
+            fontFamily: 'var(--font-heading)',
+            fontStyle: 'italic',
+            textTransform: 'uppercase',
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+          }}>
+            {item.title}
+          </h3>
+          <p style={{
+            fontSize: '0.8rem',
+            color: '#a3a3a3',
+            lineHeight: 1.5,
+            marginBottom: 12,
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+          }}>
+            {item.excerpt}
+          </p>
+          <p style={{ fontSize: '0.72rem', color: '#737373', fontFamily: 'var(--font-mono)' }}>
+            {formatDate(item.event_date || item.created_at)}
+          </p>
+        </div>
+      </div>
+    </Link>
   );
 }
 

@@ -6,6 +6,7 @@ const NAV_ITEMS = [
   { to: '/admin', label: 'Dashboard', icon: '▦', end: true },
   { to: '/admin/products', label: 'Products', icon: '⬡' },
   { to: '/admin/info', label: 'Company Info', icon: '◎' },
+  { to: '/admin/news', label: 'News & Events', icon: '◈' },
 ];
 
 export default function AdminLayout() {

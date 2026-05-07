@@ -39,19 +39,30 @@ export default function Navbar() {
     }}>
       <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 64 }}>
         {/* Logo */}
-        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
-          <img src="/logo.png" alt="Trinergy Logo" style={{ height: 40, objectFit: 'contain' }} />
-          <span style={{
-            fontFamily: 'var(--font-heading)',
-            fontWeight: 800,
-            fontStyle: 'italic',
-            fontSize: '1.1rem',
-            textTransform: 'uppercase',
-            letterSpacing: '0.08em',
-            color: '#f5f5f5',
-          }}>
-            TRINERGY
-          </span>
+        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 12, textDecoration: 'none' }}>
+          <img src="/logo.png" alt="Trinergy Logo" style={{ height: 52, objectFit: 'contain' }} />
+          <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.1 }}>
+            <span style={{
+              fontFamily: 'var(--font-heading)',
+              fontWeight: 800,
+              fontStyle: 'italic',
+              fontSize: '1.05rem',
+              textTransform: 'uppercase',
+              letterSpacing: '0.06em',
+              color: '#f5f5f5',
+            }}>
+              Trinergy
+            </span>
+            <span style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: '0.6rem',
+              color: '#4ade80',
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+            }}>
+              Comm-THA
+            </span>
+          </div>
         </Link>
 
         {/* Desktop nav */}

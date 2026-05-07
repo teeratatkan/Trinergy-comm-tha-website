@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
+import { slugify } from '../utils/slugify';
 
 const CATEGORY_LABELS = {
   iot: 'IoT Lab Kits',
@@ -29,7 +30,7 @@ function safeParseSpecs(raw) {
 }
 
 export default function ProductDetail() {
-  const { id } = useParams();
+  const { slug } = useParams();
   const [product, setProduct] = useState(null);
   const [related, setRelated] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -39,23 +40,34 @@ export default function ProductDetail() {
   useEffect(() => {
     setLoading(true);
     setError('');
-    axios.get(`/api/products/${id}`)
+    setProduct(null);
+    // Fetch all products and resolve by slug
+    axios.get('/api/products')
       .then(res => {
-        setProduct(res.data);
+        const all = res.data;
+        const found = all.find(p => slugify(p.name) === slug);
+        if (!found) {
+          setError('Product not found');
+          setLoading(false);
+          return;
+        }
+        setProduct(found);
+        const rel = all.filter(p => p.category === found.category && p.id !== found.id);
+        setRelated(rel.slice(0, 3));
         setLoading(false);
       })
-      .catch(err => {
-        setError(err.response?.data?.error || 'Product not found');
+      .catch(() => {
+        setError('Failed to load products');
         setLoading(false);
       });
-  }, [id]);
+  }, [slug]);
 
   useEffect(() => {
     if (!product) return;
     document.title = product.name + ' | Trinergy Comm-THA';
     axios.get('/api/products')
       .then(res => {
-        const rel = res.data.filter(p => p.category === product.category && String(p.id) !== String(id));
+        const rel = res.data.filter(p => p.category === product.category && p.id !== product.id);
         setRelated(rel.slice(0, 3));
       })
       .catch(() => {});
@@ -528,7 +540,7 @@ function RelatedCard({ product }) {
 
   return (
     <Link
-      to={`/products/${product.id}`}
+      to={`/products/${slugify(product.name)}`}
       style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
     >
       <div

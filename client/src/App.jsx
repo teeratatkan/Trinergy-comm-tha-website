@@ -43,7 +43,7 @@ function AppRoutes() {
       {/* Public routes */}
       <Route path="/" element={<PublicLayout><Home /></PublicLayout>} />
       <Route path="/products" element={<PublicLayout><Products /></PublicLayout>} />
-      <Route path="/products/:id" element={<PublicLayout><ProductDetail /></PublicLayout>} />
+      <Route path="/products/:slug" element={<PublicLayout><ProductDetail /></PublicLayout>} />
       <Route path="/5g" element={<PublicLayout><FiveG /></PublicLayout>} />
       <Route path="/industries" element={<PublicLayout><Industries /></PublicLayout>} />
       <Route path="/about" element={<PublicLayout><About /></PublicLayout>} />

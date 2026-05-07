@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { slugify } from '../utils/slugify';
 
 const CATEGORIES = [
   { key: 'all', label: 'All' },
@@ -230,7 +231,7 @@ function ProductCard({ product }) {
 
   return (
     <Link
-      to={`/products/${product.id}`}
+      to={`/products/${slugify(product.name)}`}
       style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
     >
       <div

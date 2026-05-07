@@ -52,6 +52,7 @@ export default function ProductDetail() {
           return;
         }
         setProduct(found);
+        document.title = found.name + ' | Trinergy Comm-THA';
         const rel = all.filter(p => p.category === found.category && p.id !== found.id);
         setRelated(rel.slice(0, 3));
         setLoading(false);
@@ -65,13 +66,7 @@ export default function ProductDetail() {
   useEffect(() => {
     if (!product) return;
     document.title = product.name + ' | Trinergy Comm-THA';
-    axios.get('/api/products')
-      .then(res => {
-        const rel = res.data.filter(p => p.category === product.category && p.id !== product.id);
-        setRelated(rel.slice(0, 3));
-      })
-      .catch(() => {});
-  }, [product, id]);
+  }, [product]);
 
   if (loading) {
     return (

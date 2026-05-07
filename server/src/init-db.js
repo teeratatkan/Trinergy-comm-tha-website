@@ -46,8 +46,8 @@ function initDb() {
 
   // Seed products — always fresh (DB was deleted above)
   const insertProduct = db.prepare(`
-    INSERT INTO products (name, category, short_description, description, tags, specs, display_order, theme)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO products (name, category, short_description, description, tags, specs, image_path, display_order, theme)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);
 
   const products = [
@@ -69,6 +69,7 @@ function initDb() {
         "Connectivity": "Wi-Fi, MQTT Cloud",
         "Target": "University / Vocational"
       }),
+      'product-1-seed-iot.png',
       1,
       'blue',
     ],
@@ -89,6 +90,7 @@ function initDb() {
         "Communication": "Wi-Fi, RS485",
         "Target": "University / Industrial Training"
       }),
+      'product-2-seed-iot-pro.png',
       2,
       'blue',
     ],
@@ -110,6 +112,7 @@ function initDb() {
         "Power": "24V DC with surge protection",
         "Target": "University / Smart Farm Research"
       }),
+      'product-3-iot-farming.png',
       3,
       'blue',
     ],
@@ -131,6 +134,7 @@ function initDb() {
         "Dashboard": "Real-time multi-zone + LINE alerts",
         "Edge AI": "Auto-irrigation ML model"
       }),
+      'product-4-super-crops.png',
       4,
       'blue',
     ],
@@ -152,6 +156,7 @@ function initDb() {
         "Breadboard": "400-point breadboard included",
         "Lab Exercises": "20+ structured labs"
       }),
+      'product-5-lab-iot.png',
       5,
       'blue',
     ],
@@ -172,6 +177,7 @@ function initDb() {
         "AI Support": "ML/AI data pipeline, CSV export for training",
         "Target": "University, Industrial, Smart Building"
       }),
+      'product-6-udata.png',
       6,
       'purple',
     ],
@@ -193,6 +199,7 @@ function initDb() {
         "Thai AI": "Thai NLP datasets included",
         "Curriculum": "Complete with trainer on-site"
       }),
+      'product-7-ai-lab.png',
       7,
       'purple',
     ],
@@ -214,6 +221,7 @@ function initDb() {
         "Citations": "Every answer includes source references",
         "Target": "University, Enterprise, Government"
       }),
+      'product-8-gen-tri.png',
       8,
       'purple',
     ],
@@ -235,6 +243,7 @@ function initDb() {
         "Compatible": "NI USRP B200/B210",
         "Target": "University R&D, Telecom Labs"
       }),
+      'product-9-oaibox.png',
       9,
       'green',
     ],
@@ -258,6 +267,7 @@ function initDb() {
         "Simulator": "UERANSIM (gNB + UE)",
         "TRL": "4 → 8 (funded by บพข.)"
       }),
+      'product-10-5g-private.png',
       10,
       'green',
     ],
@@ -279,6 +289,7 @@ function initDb() {
         "Lab Manual": "3+ structured lab exercises",
         "Target": "University Telecom / Electrical Engineering"
       }),
+      'product-11-fttx.jpg',
       11,
       'orange',
     ],
@@ -302,6 +313,7 @@ function initDb() {
         "Lab Exercises": "10+ exercises with example programs",
         "Standard": "IEC compliant"
       }),
+      'product-12-plc.png',
       12,
       'orange',
     ],

@@ -1,12 +1,15 @@
+require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
 
-const authRoutes = require('./routes/auth');
+const authRoutes    = require('./routes/auth');
 const productRoutes = require('./routes/products');
-const infoRoutes = require('./routes/info');
-const fivegRoutes = require('./routes/fiveg');
-const newsRoutes = require('./routes/news');
+const infoRoutes    = require('./routes/info');
+const fivegRoutes   = require('./routes/fiveg');
+const newsRoutes    = require('./routes/news');
+const contactRoutes = require('./routes/contact');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -47,6 +50,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/info', infoRoutes);
 app.use('/api/5g-specs', fivegRoutes);
 app.use('/api/news', newsRoutes);
+app.use('/api/contact', contactRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

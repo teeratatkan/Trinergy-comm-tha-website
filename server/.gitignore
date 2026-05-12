@@ -1,0 +1,5 @@
+node_modules/
+.env
+trinergy.db
+trinergy.db-shm
+trinergy.db-wal
